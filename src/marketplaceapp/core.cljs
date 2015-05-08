@@ -4,7 +4,17 @@
 
 (enable-console-print!)
 (def initial-state
-  {:counter 0})
+  {
+    :counter 0
+    :columns [{"sort_column" "temperature"
+               "title" "Temperature"}
+              {"sort_column" "humidity"
+               "title" "Humidity"
+               "unit" "%"}]
+    :rows [{"temperature" 88 "humidity" 44}
+           {"temperature" 55 "humidity" 33}
+           {"temperature" 110 "humidity" 66}]
+  })
 
 (defonce app-state
   (atom initial-state))
@@ -20,21 +30,27 @@
     [value]
     [:td.scroll_columns.is_aligned_left value])
 
-(rum/defc be-table [rows]
+(rum/defc be-table [columns rows]
   [:div.vert_table_scroll_container
     [:table.table.table-striped.sortable
         [:thead
-         [:tr (header-row "temperature") (header-row "humidity")]
-         ]
+         [:tr (for [col columns]
+                (header-row (get col "title")))
+         ]]
         [:tbody
-         [:tr (row-td 77.3) (row-td "35%")]
+         (for [row rows]
+           (for [col columns]
+             (row-td (get row (get col "sort_column")))
+             )
+           )
+         ;[:tr (row-td 77.3) (row-td "35%")]
          ]
      ]
    ])
 
 (rum/defc app-ui [app]
   [:div.app
-   (be-table (:rows app))
+   (be-table (:columns app) (:rows app))
    [:h2 {:on-click (fn [& _] (swap! app-state update :counter inc))}
     "App UI"]
    [:ul
