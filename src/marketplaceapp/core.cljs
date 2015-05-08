@@ -29,6 +29,16 @@
 (defn row-td
     [value]
     [:td.scroll_columns.is_aligned_left value])
+(defn render-row
+  "renders a tr"
+  [row columns]
+  [:tr
+    (for [col columns]
+      (let [sort-column (get col "sort_column")
+            row-value (get row sort-column)
+            unit (get col "unit" "")
+            row-text (str row-value unit)]
+        (row-td row-text)))])
 
 (rum/defc be-table [columns rows]
   [:div.vert_table_scroll_container
@@ -39,12 +49,7 @@
          ]]
         [:tbody
          (for [row rows]
-           (for [col columns]
-             (row-td (get row (get col "sort_column")))
-             )
-           )
-         ;[:tr (row-td 77.3) (row-td "35%")]
-         ]
+           (render-row row columns))]
      ]
    ])
 
