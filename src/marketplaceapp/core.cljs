@@ -13,8 +13,6 @@
   (reset! app-state initial-state))
 
 
-
-
 (defn header-row
     [value]
     [:th.column_head.scroll_columns value])
