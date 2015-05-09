@@ -10,8 +10,9 @@
                "title" "Temperature"}
               {"sort_column" "humidity"
                "title" "Humidity"
-               "unit" "%"}
-               {"subtitle" "%"}]
+               "unit" "%"
+               "subtitle" "%"}
+               ]
     :rows (into []
             (take 10 (cycle [{"temperature" 89 "humidity" 44}
                               {"temperature" 55 "humidity" 33}
@@ -25,8 +26,8 @@
   (reset! app-state initial-state))
 
 (defn header-row
-    [value]
-    [:th.column_head.scroll_columns value])
+    [value subtitle]
+    [:th.column_head.scroll_columns value [:span.subtitle subtitle]])
 
 (defn row-td
     [value]
@@ -51,7 +52,7 @@
     [:table.table.table-striped.sortable
         [:thead
          [:tr (for [col columns]
-                (header-row (get col "title")))
+                (header-row (get col "title") (get col "subtitle")))
          ]]
         [:tbody
          (for [row rows]
