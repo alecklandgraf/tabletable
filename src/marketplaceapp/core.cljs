@@ -4,9 +4,14 @@
 
 (enable-console-print!)
 
-(defn row-data
+(defn data-generate-row-data
+  "generates a row's data"
   []
   {"temperature" (rand-int 100) "humidity" (rand-int 100)})
+(defn data-generate
+  "generates n number of a row's data"
+  [n]
+  (for [x (range n)] (data-generate-row-data)))
 
 (def initial-state
 {
@@ -18,11 +23,7 @@
                "unit" "%"
                "subtitle" "%"}
                ]
-    :rows (into []
-            (take 10 (cycle [(row-data)
-                             (row-data) 
-                             (row-data)])))}
-  )
+    :rows (data-generate 10)})
 
 (defonce app-state
   (atom initial-state))
