@@ -3,6 +3,11 @@
             [dommy.core :refer-macros [sel sel1]]))
 
 (enable-console-print!)
+
+(defn row-data
+  []
+  {"temperature" (rand-int 100) "humidity" (rand-int 100)})
+
 (def initial-state
 {
     :counter 0
@@ -14,9 +19,9 @@
                "subtitle" "%"}
                ]
     :rows (into []
-            (take 10 (cycle [{"temperature" 89 "humidity" 44}
-                              {"temperature" 55 "humidity" 33}
-                              {"temperature" 110 "humidity" 85}])))}
+            (take 10 (cycle [(row-data)
+                             (row-data) 
+                             (row-data)])))}
   )
 
 (defonce app-state
@@ -43,6 +48,8 @@
             unit (get col "unit" "")
             row-text (str row-value unit)]
         (row-td row-text)))])
+
+
 
 (rum/defc be-table
   "renders the be-table"
