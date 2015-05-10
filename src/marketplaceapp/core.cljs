@@ -11,7 +11,7 @@
 (defn data-generate
   "generates n number of a row's data"
   [n]
-  (for [x (range n)] (data-generate-row-data)))
+  (for [_ (range n)] (data-generate-row-data)))
 
 (def initial-state
 {
