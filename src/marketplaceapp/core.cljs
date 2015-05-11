@@ -25,11 +25,15 @@
 (defonce app-state
   (atom initial-state))
 
+(defn sort-rows
+  [state sort-column-name]
+  (update-in state [:rows] (fn [rows] (sort-by #(get % sort-column-name) rows))))
+
 (defn sort-data
   "func to demonstrate how passing a callback might work"
   [sort-column-name]
   (prn sort-column-name)
-  (prn (sort-by #(get % sort-column-name) (:rows @app-state))))
+  (swap! app-state sort-rows sort-column-name))
 
 (defn reset-state! []
   (reset! app-state initial-state))
