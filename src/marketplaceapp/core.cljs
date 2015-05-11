@@ -27,7 +27,8 @@
 
 (defn sort-rows
   [state sort-column-name]
-  (update-in state [:rows] (fn [rows] (sort-by #(get % sort-column-name) rows))))
+  (assoc state
+         :rows (sort-by #(get % sort-column-name) (:rows state))))
 
 (defn sort-data
   "func to demonstrate how passing a callback might work"
