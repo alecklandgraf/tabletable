@@ -9,10 +9,6 @@
   []
   {"temperature" (rand-int 100) "humidity" (rand-int 100)})
 
-(defn sort-data
-  "func to demonstrate how passing a callback might work"
-  [sort-column-name]
-  (prn sort-column-name))
 
 (def initial-state
 {
@@ -29,12 +25,18 @@
 (defonce app-state
   (atom initial-state))
 
+(defn sort-data
+  "func to demonstrate how passing a callback might work"
+  [sort-column-name]
+  (prn sort-column-name)
+  (prn (sort-by #(get % sort-column-name) (:rows @app-state))))
+
 (defn reset-state! []
   (reset! app-state initial-state))
 
 (defn header-row
-  [value subtitle click-callback]
-  (let [handle-click (fn [& _] (click-callback value))]
+  [value subtitle column-name click-callback]
+  (let [handle-click (fn [& _] (click-callback column-name))]
     [:th.column_head.scroll_columns {:on-click handle-click} value [:span.subtitle subtitle]]))
 
 (defn row-td
@@ -61,7 +63,7 @@
     [:table.table.table-striped.sortable
         [:thead
          [:tr (for [col columns]
-                (header-row (get col "title") (get col "subtitle") sort-data))
+                (header-row (get col "title") (get col "subtitle") (get col "sort_column") sort-data))
          ]]
         [:tbody
          (for [row rows]
