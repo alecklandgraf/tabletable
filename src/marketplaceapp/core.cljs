@@ -36,10 +36,10 @@
   (reset! app-state initial-state))
 
 (defn header-row
-    [value subtitle]
+    [value subtitle click-callback]
     (defn handle-click
       []
-      (sort-data value))
+      (click-callback value))
     [:th.column_head.scroll_columns {:on-click handle-click} value [:span.subtitle subtitle]])
 
 (defn row-td
@@ -66,7 +66,7 @@
     [:table.table.table-striped.sortable
         [:thead
          [:tr (for [col columns]
-                (header-row (get col "title") (get col "subtitle")))
+                (header-row (get col "title") (get col "subtitle") sort-data))
          ]]
         [:tbody
          (for [row rows]
