@@ -20,7 +20,9 @@
                "unit" "%"
                "subtitle" "%"}
                ]
-    :rows (repeatedly 10 data-generate-row-data)})
+    :rows (repeatedly 10 data-generate-row-data)
+    :sort-column ""
+    :sort-reverse false})
 
 (defonce app-state
   (atom initial-state))
