@@ -8,10 +8,7 @@
   "generates a row's data"
   []
   {"temperature" (rand-int 100) "humidity" (rand-int 100)})
-(defn data-generate
-  "generates n number of a row's data"
-  [n]
-  (for [_ (range n)] (data-generate-row-data)))
+
 (defn sort-data
   "func to demonstrate how passing a callback might work"
   [sort-column-name]
@@ -27,7 +24,7 @@
                "unit" "%"
                "subtitle" "%"}
                ]
-    :rows (data-generate 10)})
+    :rows (repeatedly 10 data-generate-row-data)})
 
 (defonce app-state
   (atom initial-state))
@@ -36,11 +33,9 @@
   (reset! app-state initial-state))
 
 (defn header-row
-    [value subtitle click-callback]
-    (defn handle-click
-      []
-      (click-callback value))
-    [:th.column_head.scroll_columns {:on-click handle-click} value [:span.subtitle subtitle]])
+  [value subtitle click-callback]
+  (let [handle-click (fn [& _] (click-callback value))]
+    [:th.column_head.scroll_columns {:on-click handle-click} value [:span.subtitle subtitle]]))
 
 (defn row-td
     [value]
